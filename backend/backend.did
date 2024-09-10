@@ -1,0 +1,18 @@
+type Sport = text;
+type Result = 
+ variant {
+   err: text;
+   ok: vec GameScore;
+ };
+type GameScore = 
+ record {
+   awayScore: nat;
+   awayTeam: text;
+   homeScore: nat;
+   homeTeam: text;
+ };
+service : {
+  getLastUpdateTime: () -> (int) query;
+  getScores: (Sport) -> (Result) query;
+  refreshScores: () -> ();
+}
