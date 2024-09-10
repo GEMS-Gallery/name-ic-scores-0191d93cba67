@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { backend } from 'declarations/backend';
-import { Container, Typography, Box, Select, MenuItem, FormControl, InputLabel, Card, CardContent, Grid, CircularProgress, Alert } from '@mui/material';
+import { Container, Typography, Box, Select, MenuItem, FormControl, InputLabel, Card, CardContent, Grid, CircularProgress, Alert, Paper } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 
 type GameScore = {
@@ -9,6 +9,17 @@ type GameScore = {
   homeScore: number;
   awayScore: number;
 };
+
+const MLBScoreTile: React.FC<{ game: GameScore }> = ({ game }) => (
+  <Paper elevation={3} sx={{ p: 2, textAlign: 'center', height: '100%' }}>
+    <Typography variant="subtitle1" gutterBottom>
+      {game.homeTeam} vs {game.awayTeam}
+    </Typography>
+    <Typography variant="h4">
+      {game.homeScore} - {game.awayScore}
+    </Typography>
+  </Paper>
+);
 
 const App: React.FC = () => {
   const [sport, setSport] = useState<string>('MLB');
@@ -76,17 +87,21 @@ const App: React.FC = () => {
           <>
             <Grid container spacing={2}>
               {scores.map((game, index) => (
-                <Grid item xs={12} sm={6} key={index}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="h6" component="div">
-                        {game.homeTeam} vs {game.awayTeam}
-                      </Typography>
-                      <Typography variant="body1">
-                        {game.homeScore} - {game.awayScore}
-                      </Typography>
-                    </CardContent>
-                  </Card>
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  {sport === 'MLB' ? (
+                    <MLBScoreTile game={game} />
+                  ) : (
+                    <Card>
+                      <CardContent>
+                        <Typography variant="h6" component="div">
+                          {game.homeTeam} vs {game.awayTeam}
+                        </Typography>
+                        <Typography variant="body1">
+                          {game.homeScore} - {game.awayScore}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  )}
                 </Grid>
               ))}
             </Grid>

@@ -33,7 +33,9 @@ actor {
     switch (sport) {
       case ("MLB") [
         { homeTeam = "Yankees"; awayTeam = "Red Sox"; homeScore = 3; awayScore = 2 },
-        { homeTeam = "Dodgers"; awayTeam = "Giants"; homeScore = 5; awayScore = 4 }
+        { homeTeam = "Dodgers"; awayTeam = "Giants"; homeScore = 5; awayScore = 4 },
+        { homeTeam = "Cubs"; awayTeam = "Cardinals"; homeScore = 2; awayScore = 2 },
+        { homeTeam = "Mets"; awayTeam = "Phillies"; homeScore = 1; awayScore = 0 }
       ];
       case ("NBA") [
         { homeTeam = "Lakers"; awayTeam = "Celtics"; homeScore = 105; awayScore = 98 },
