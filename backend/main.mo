@@ -1,6 +1,4 @@
 import Hash "mo:base/Hash";
-import Iter "mo:base/Iter";
-import Nat "mo:base/Nat";
 
 import Array "mo:base/Array";
 import Time "mo:base/Time";
@@ -10,6 +8,8 @@ import Result "mo:base/Result";
 import Error "mo:base/Error";
 import Debug "mo:base/Debug";
 import Int "mo:base/Int";
+import Iter "mo:base/Iter";
+import Nat "mo:base/Nat";
 
 actor {
   // Types
@@ -28,7 +28,7 @@ actor {
   // Initialize HashMap
   let scoresMap = HashMap.fromIter<Sport, [GameScore]>(scores.vals(), 10, Text.equal, Text.hash);
 
-  // Helper function to generate mock scores
+  // Helper function to generate mock scores for all sports
   func generateMockScores(sport: Sport): [GameScore] {
     switch (sport) {
       case ("MLB") [
@@ -59,8 +59,8 @@ actor {
   func updateScores(): async () {
     let sports = ["MLB", "NBA", "NFL", "NHL", "MLS"];
     for (sport in sports.vals()) {
-      let mockScores = generateMockScores(sport);
-      scoresMap.put(sport, mockScores);
+      let newScores = generateMockScores(sport);
+      scoresMap.put(sport, newScores);
     };
     lastUpdate := Time.now();
   };

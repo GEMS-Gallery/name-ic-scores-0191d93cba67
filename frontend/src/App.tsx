@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { backend } from 'declarations/backend';
-import { Container, Typography, Box, Select, MenuItem, FormControl, InputLabel, Card, CardContent, Grid, CircularProgress } from '@mui/material';
+import { Container, Typography, Box, Select, MenuItem, FormControl, InputLabel, Card, CardContent, Grid, CircularProgress, Alert } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 
 type GameScore = {
@@ -14,20 +14,23 @@ const App: React.FC = () => {
   const [sport, setSport] = useState<string>('MLB');
   const [scores, setScores] = useState<GameScore[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<string>('');
 
   const fetchScores = async () => {
     setLoading(true);
+    setError(null);
     try {
       const result = await backend.getScores(sport);
       if ('ok' in result) {
         setScores(result.ok);
       } else {
-        console.error('Error fetching scores:', result.err);
+        setError(result.err);
       }
       const updateTime = await backend.getLastUpdateTime();
       setLastUpdate(new Date(Number(updateTime) / 1000000).toLocaleString());
     } catch (error) {
+      setError('Error fetching scores. Please try again later.');
       console.error('Error fetching scores:', error);
     }
     setLoading(false);
@@ -47,7 +50,7 @@ const App: React.FC = () => {
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Live Sports Scores
+          Live Sports Scores (Mock Data)
         </Typography>
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel id="sport-select-label">Sport</InputLabel>
@@ -67,6 +70,8 @@ const App: React.FC = () => {
         </FormControl>
         {loading ? (
           <CircularProgress />
+        ) : error ? (
+          <Alert severity="error">{error}</Alert>
         ) : (
           <>
             <Grid container spacing={2}>
